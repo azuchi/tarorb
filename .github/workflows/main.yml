@@ -23,5 +23,9 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+    - name: prettier
+      run: bundle exec rbprettier --check '**/*.rb'
+    - name: rubocop
+      run: bundle exec rubocop .
     - name: Run the default task
       run: bundle exec rake
