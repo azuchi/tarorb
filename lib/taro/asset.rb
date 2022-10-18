@@ -76,7 +76,7 @@ module Taro
       locktime,
       relative_locktime,
       script_key,
-      family_key
+      family_key = nil
     )
       @genesis = genesis
       @amount = amount
@@ -89,6 +89,15 @@ module Taro
     # Calculate asset commitment key that maps to a specific owner of an asset within a Taro AssetCommitment.
     # @return [String] commitment key
     def commitment_key
+      payload =
+        (
+          if family_key.nil?
+            script_key.xonly_pubkey.htb
+          else
+            genesis.id.htb + script_key.xonly_pubkey.htb
+          end
+        )
+      Bitcoin.sha256(payload)
     end
   end
 end

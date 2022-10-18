@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
 module Taro
-  VERSION = "0.1.0"
+  class TaroCommitment
+  end
 end
