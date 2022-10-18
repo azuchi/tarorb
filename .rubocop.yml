@@ -1,8 +1,17 @@
 require:
   - rubocop-rake
   - rubocop-rspec
-
+inherit_gem:
+  prettier: rubocop.yml
 AllCops:
   TargetRubyVersion: 2.7
 RSpec/ExampleLength:
+  Enabled: false
+Metrics:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Max: 5
+Style/IfUnlessModifier:
+  Enabled: false
+Style/WhileUntilModifier:
   Enabled: false
