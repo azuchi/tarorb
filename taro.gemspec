@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency 'bitcoinrb', '~> 1.1.1'
+  spec.add_dependency 'mssmt'
 
   spec.add_development_dependency 'prettier'
   spec.add_development_dependency 'rubocop-rake'
