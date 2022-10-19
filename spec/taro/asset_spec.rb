@@ -39,6 +39,14 @@ RSpec.describe Taro::Asset do
         )
       end
     end
+
+    describe "#encode" do
+      it do
+        expect(genesis2.encode.bth).to eq(
+          "0101010101010101010101010101010101010101010101010101010101010101000000010c6e6f726d616c206173736574030102030000000100"
+        )
+      end
+    end
   end
 
   describe "#commitment_key" do

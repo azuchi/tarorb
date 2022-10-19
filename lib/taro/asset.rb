@@ -3,6 +3,9 @@
 module Taro
   # Genesis encodes an asset's genesis metadata
   class Genesis
+    include Bitcoin::Util
+    include Taro::Util
+
     attr_reader :first_prev_out, :tag, :metadata, :output_index, :type
 
     # Constructor
@@ -45,6 +48,14 @@ module Taro
         first_prev_out.to_payload + tag_hash + metadata_hash +
           [output_index, type].pack("I>C")
       Bitcoin.sha256(payload).bth
+    end
+
+    # Encode genesis
+    # @return [String] encoded genesis
+    def encode
+      first_prev_out.tx_hash.htb + [first_prev_out.index].pack("N") +
+        pack_var_string(tag) + pack_var_string(metadata) +
+        [output_index, type].pack("I>C")
     end
   end
 
@@ -98,6 +109,16 @@ module Taro
           end
         )
       Bitcoin.sha256(payload)
+    end
+
+    # Return asset leaf as a MS-SMT leaf node.
+    # @return [MSSMT::LeafNode]
+    def leaf
+    end
+
+    private
+
+    def tlv
     end
   end
 end
