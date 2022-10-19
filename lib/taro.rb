@@ -7,6 +7,7 @@ require_relative "taro/version"
 module Taro
   class Error < StandardError
   end
+  autoload :Util, "taro/util"
   autoload :KeyDescriptor, "taro/key_descriptor"
   autoload :FamilyKey, "taro/family_key"
   autoload :Asset, "taro/asset"
