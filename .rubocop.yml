@@ -16,4 +16,4 @@ Style/IfUnlessModifier:
 Style/WhileUntilModifier:
   Enabled: false
 LineLength:
-  Max: 150
+  Enabled: false

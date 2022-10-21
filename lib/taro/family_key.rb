@@ -16,6 +16,15 @@ module Taro
       unless sig.is_a?(Schnorr::Signature)
         raise ArgumentError, "sig must be Schnorr::Signature"
       end
+      @raw_key = raw_key
+      @fam_key = fam_key
+      @sig = sig
+    end
+
+    # Encode tlv payload
+    # @return [String]
+    def encode
+      fam_key.xonly_pubkey.htb + sig.encode
     end
   end
 end

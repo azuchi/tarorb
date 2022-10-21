@@ -64,14 +64,14 @@ module Taro
     TYPE_NORMAL = 0
     TYPE_COLLECTIBLE = 1
 
-    attr_reader :ver,
+    attr_reader :version,
                 :genesis,
                 :amount,
                 :locktime,
                 :relative_locktime,
                 :prev_witnesses,
                 :split_commitment_root,
-                :script_ver,
+                :script_version,
                 :script_key,
                 :family_key
 
@@ -95,6 +95,9 @@ module Taro
       @relative_locktime = relative_locktime
       @script_key = script_key
       @family_key = family_key
+      @version = 0
+      @prev_witnesses = [Taro::Witness.new(Taro::PrevID.empty)]
+      @script_version = 0
     end
 
     # Calculate asset commitment key that maps to a specific owner of an asset within a Taro AssetCommitment.
@@ -113,12 +116,39 @@ module Taro
 
     # Return asset leaf as a MS-SMT leaf node.
     # @return [MSSMT::LeafNode]
-    def leaf
+    def leaf_node
+      MSSMT::LeafNode.new(tlv, amount)
     end
 
     private
 
     def tlv
+      tlv_records.map(&:tlv).join
+    end
+
+    def tlv_records
+      records = [
+        TLV::Record.new(TLV::VERSION, version),
+        TLV::Record.new(TLV::GENESIS, genesis),
+        TLV::Record.new(TLV::ASSET_TYPE, genesis.type),
+        TLV::Record.new(TLV::AMOUNT, amount)
+      ]
+      records << TLV::Record.new(TLV::LOCKTIME, locktime) if locktime.positive?
+      if relative_locktime.positive?
+        records << TLV::Record.new(TLV::RELATIVE_LOCKTIME, relative_locktime)
+      end
+      if prev_witnesses.length.positive?
+        records << TLV::Record.new(TLV::PREV_ASSET_WITNESS, prev_witnesses)
+      end
+      if split_commitment_root
+        # TODO
+      end
+      records << TLV::Record.new(TLV::ASSET_SCRIPT_VERSION, script_version)
+      records << TLV::Record.new(TLV::ASSET_SCRIPT_KEY, script_key)
+      if family_key
+        records << TLV::Record.new(TLV::ASSET_FAMILY_KEY, family_key)
+      end
+      records
     end
   end
 end

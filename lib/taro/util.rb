@@ -33,10 +33,10 @@ module Taro
       end
     end
 
-    # Serialize +i+ as a variable number of bytes.
+    # Serialize +value+ as a variable number of bytes.
     # @param [Integer] value value to be serialized.
     # @return [String] big size value.
-    # @raise [Taro::Error] if +i+ is too large.
+    # @raise [Taro::Error] if +value+ is too large.
     def pack_big_size(value)
       if value < 0xfd
         [value].pack("C")
@@ -49,6 +49,12 @@ module Taro
       else
         raise Error, "#{value} is too large!"
       end
+    end
+
+    # Convert +value+ to pack_big_size(+value+.bytesize) + value
+    # @return [String]
+    def pack_var_string(value)
+      pack_big_size(value.bytesize) + value
     end
   end
 end
