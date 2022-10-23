@@ -39,27 +39,43 @@ RSpec.describe Taro::AssetCommitment do
     Taro::Asset.new(genesis, 741, 0, 0, script_key, family_key)
   end
 
+  let(:asset_no_fam_key) { Taro::Asset.new(genesis, 741, 0, 0, script_key) }
+
   describe "#new" do
-    it do
-      asset_commitment = described_class.new([asset])
-      expect(asset_commitment.tree.root_hash.bth).to eq(
-        "406785de1d71bb5cf9d1c1865835ba19cd769ff3b0755a1f3eaa5a14881ce226"
-      )
-      expect(asset_commitment.root.bth).to eq(
-        "2b87151d52d4ab61f5beabce7ef57de1c85c749be01dd8895e96e930057e6a28"
-      )
-      taro_commitment = Taro::TaroCommitment.new([asset_commitment])
-      expect(taro_commitment.tree.root_hash.bth).to eq(
-        "c0070dca12dbfda6ccda14b70661b1b31867c6cdd763fe6abc65276f3b514c64"
-      )
-      internal_key =
-        Bitcoin::Key.new(
-          pubkey:
-            "02fe3155363518765636316775fec96b57e454c3dd50ce19d18da5a1f9cf91b3a7"
+    context "with family key" do
+      it do
+        asset_commitment = described_class.new([asset])
+        expect(asset_commitment.tree.root_hash.bth).to eq(
+          "406785de1d71bb5cf9d1c1865835ba19cd769ff3b0755a1f3eaa5a14881ce226"
         )
-      expect(taro_commitment.to_taproot(internal_key).to_hex).to eq(
-        "5120d44fe36abb371edff7f405c96128e5b8429cb5109e0182afe22de4a3e0e440c1"
-      )
+        expect(asset_commitment.root.bth).to eq(
+          "2b87151d52d4ab61f5beabce7ef57de1c85c749be01dd8895e96e930057e6a28"
+        )
+        taro_commitment = Taro::TaroCommitment.new([asset_commitment])
+        expect(taro_commitment.tree.root_hash.bth).to eq(
+          "c0070dca12dbfda6ccda14b70661b1b31867c6cdd763fe6abc65276f3b514c64"
+        )
+        internal_key =
+          Bitcoin::Key.new(
+            pubkey:
+              "02fe3155363518765636316775fec96b57e454c3dd50ce19d18da5a1f9cf91b3a7"
+          )
+        expect(taro_commitment.to_taproot(internal_key).to_hex).to eq(
+          "5120d44fe36abb371edff7f405c96128e5b8429cb5109e0182afe22de4a3e0e440c1"
+        )
+      end
+    end
+
+    context "without family key" do
+      it do
+        asset_commitment = described_class.new([asset_no_fam_key])
+        expect(asset_commitment.tree.root_hash.bth).to eq(
+          "20da4028f10e44c73773966747109d99b247b056cc28aae3aad4ff80916c1bcb"
+        )
+        expect(asset_commitment.root.bth).to eq(
+          "59e3caf35868cb5b00c54246b2a1ca7c8069ea8644f012ad255fdc35152a623e"
+        )
+      end
     end
   end
 end
