@@ -27,12 +27,43 @@ module Taro
           # TODO: There should be a valid Schnorr sig over the asset ID in the family key.
         end
         max_version = asset.version if asset.version > max_version
-        @tree.insert(asset.commitment_key.bth, asset.leaf_node)
+        @tree.insert(asset.commitment_key.bth, asset.leaf)
       end
-      asset_id = asset_family_key.nil? ? asset_genesis : nil # TODO: family key based derivation
+      asset_id =
+        (
+          if asset_family_key.nil?
+            asset_genesis
+          else
+            Bitcoin.sha256(asset_family_key.fam_key.xonly_pubkey.htb)
+          end
+        )
 
       @version = max_version
       @asset_id = asset_id
+    end
+
+    # Computes the root identifier required to commit to this specific asset commitment within the outer commitment,
+    # also known as the Taro commitment.
+    # @return [String]
+    def root
+      left = tree.root_node.left.node_hash
+      right = tree.root_node.right.node_hash
+      sum = [tree.root_node.sum].pack("Q>")
+      Bitcoin.sha256(asset_id + left + right + sum)
+    end
+
+    # Get taro commitment key which is insertion key for this specific asset commitment to include
+    # in the Taro commitment MS-SMT.
+    # @return [String]
+    def taro_commitment_key
+      asset_id
+    end
+
+    # Computes the leaf node for this specific asset commitment to include in the Taro commitment MS-SMT.
+    # @return [MSSMT::LeafNode]
+    def taro_commitment_leaf
+      value = [version].pack("C") + root + [tree.root_node.sum].pack("Q>")
+      MSSMT::LeafNode.new(value, tree.root_node.sum)
     end
   end
 end

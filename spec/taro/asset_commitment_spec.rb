@@ -45,6 +45,13 @@ RSpec.describe Taro::AssetCommitment do
       expect(asset_commitment.tree.root_hash.bth).to eq(
         "406785de1d71bb5cf9d1c1865835ba19cd769ff3b0755a1f3eaa5a14881ce226"
       )
+      expect(asset_commitment.root.bth).to eq(
+        "2b87151d52d4ab61f5beabce7ef57de1c85c749be01dd8895e96e930057e6a28"
+      )
+      taro_commitment = Taro::TaroCommitment.new([asset_commitment])
+      expect(taro_commitment.tree.root_hash.bth).to eq(
+        "c0070dca12dbfda6ccda14b70661b1b31867c6cdd763fe6abc65276f3b514c64"
+      )
     end
   end
 end

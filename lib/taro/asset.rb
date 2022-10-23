@@ -116,7 +116,7 @@ module Taro
 
     # Return asset leaf as a MS-SMT leaf node.
     # @return [MSSMT::LeafNode]
-    def leaf_node
+    def leaf
       MSSMT::LeafNode.new(tlv, amount)
     end
 
