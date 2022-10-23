@@ -52,6 +52,14 @@ RSpec.describe Taro::AssetCommitment do
       expect(taro_commitment.tree.root_hash.bth).to eq(
         "c0070dca12dbfda6ccda14b70661b1b31867c6cdd763fe6abc65276f3b514c64"
       )
+      internal_key =
+        Bitcoin::Key.new(
+          pubkey:
+            "02fe3155363518765636316775fec96b57e454c3dd50ce19d18da5a1f9cf91b3a7"
+        )
+      expect(taro_commitment.to_taproot(internal_key).to_hex).to eq(
+        "5120d44fe36abb371edff7f405c96128e5b8429cb5109e0182afe22de4a3e0e440c1"
+      )
     end
   end
 end

@@ -6,6 +6,9 @@ require "mssmt"
 
 # Taro library for issuing assets on the Bitcoin blockchain.
 module Taro
+  MARKER_TAG = "taro"
+  MARKER = Bitcoin.sha256(MARKER_TAG)
+
   class Error < StandardError
   end
   autoload :Util, "taro/util"
