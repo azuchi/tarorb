@@ -13,7 +13,7 @@ module Taro
         @version = asset.version if asset.version > @version
         key = asset.taro_commitment_key
         leaf = asset.taro_commitment_leaf
-        @tree.insert(key.bth, leaf)
+        @tree.insert(key, leaf)
       end
     end
 
@@ -29,7 +29,7 @@ module Taro
     # @param [Bitcoin::Key] internal_key Internal public key using in taproot.
     # @param [String] sibling The hash of sibling node with this leaf.
     # @return [Bitcoin::Script] ScriptPubkey for taproot.
-    def to_taproot(internal_key, sibling = nil)
+    def to_taproot(internal_key, _sibling = nil)
       # TODO: sibling support
       builder =
         Bitcoin::Taproot::SimpleBuilder.new(

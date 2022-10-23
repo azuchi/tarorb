@@ -34,7 +34,7 @@ module Taro
           if asset_family_key.nil?
             asset_genesis
           else
-            Bitcoin.sha256(asset_family_key.fam_key.xonly_pubkey.htb)
+            Bitcoin.sha256(asset_family_key.fam_key.xonly_pubkey.htb).bth
           end
         )
 
@@ -49,7 +49,7 @@ module Taro
       left = tree.root_node.left.node_hash
       right = tree.root_node.right.node_hash
       sum = [tree.root_node.sum].pack("Q>")
-      Bitcoin.sha256(asset_id + left + right + sum)
+      Bitcoin.sha256(asset_id.htb + left + right + sum)
     end
 
     # Get taro commitment key which is insertion key for this specific asset commitment to include
