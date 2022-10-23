@@ -12,6 +12,7 @@ module Taro
   autoload :TLV, "taro/tlv"
   autoload :KeyDescriptor, "taro/key_descriptor"
   autoload :FamilyKey, "taro/family_key"
+  autoload :Genesis, "taro/asset"
   autoload :Asset, "taro/asset"
   autoload :Witness, "taro/witness"
   autoload :AssetCommitment, "taro/commitment/asset"
