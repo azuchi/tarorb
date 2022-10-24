@@ -24,5 +24,6 @@ module Taro
     end
 
     autoload :Record, "taro/tlv/record"
+    autoload :AssetLeafEncoder, "taro/tlv/encoder/asset_leaf"
   end
 end

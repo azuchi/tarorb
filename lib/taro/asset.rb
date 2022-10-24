@@ -123,7 +123,7 @@ module Taro
     private
 
     def tlv
-      tlv_records.map(&:tlv).join
+      tlv_records.map { |r| TLV::AssetLeafEncoder.encode(r) }.join
     end
 
     def tlv_records
