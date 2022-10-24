@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency 'bitcoinrb', '~> 1.1.1'
+  spec.add_dependency 'bitcoinrb', '~> 1.2.0'
   spec.add_dependency 'mssmt'
 
   spec.add_development_dependency 'prettier'
