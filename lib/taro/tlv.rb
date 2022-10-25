@@ -23,7 +23,56 @@ module Taro
       SPLIT_COMMITMENT_PROOF = 2
     end
 
+    module ProofType
+      PREV_OUT = 0
+      BLOCK_HEADER = 1
+      ANCHOR_TX = 2
+      MERKLE_PROOF = 3
+      ASSET_LEAF = 4
+      INCLUSION_PROOF = 5
+      EXCLUSION_PROOF = 6
+      SPLIT_ROOT_PROOF = 7
+      ADDITIONAL_INPUTS = 8
+    end
+
+    module TaprootProofType
+      OUTPUT_INDEX = 0
+      INTERNAL_KEY = 1
+      COMMITMENT_PROOF = 2
+      TAPSCRIPT_PROOF = 3
+    end
+
+    module CommitmentProofType
+      ASSET_PROOF = 0
+      TARO_PROOF = 1
+      TAP_SIBLING_PREIMAGE = 2
+    end
+
+    module AssetProofType
+      VERSION = 0
+      ASSET_ID = 1
+      TYPE = 2
+    end
+
+    module TapscriptProofType
+      PREIMAGE1 = 0
+      PREIMAGE2 = 1
+      BIP86 = 2
+    end
+
+    module TaroProofType
+      VERSION = 0
+      TYPE = 1
+    end
+
     autoload :Record, "taro/tlv/record"
     autoload :AssetLeafEncoder, "taro/tlv/encoder/asset_leaf"
+    autoload :AssetLeafDecoder, "taro/tlv/decoder/asset_leaf"
+    autoload :PrevWitnessEncoder, "taro/tlv/encoder/prev_witness"
+    autoload :PrevWitnessDecoder, "taro/tlv/decoder/prev_witness"
+    autoload :ProofDecoder, "taro/tlv/decoder/proof"
+    autoload :TaprootProofDecoder, "taro/tlv/decoder/taproot_proof"
+    autoload :AssetProofDecoder, "taro/tlv/decoder/asset_proof"
+    autoload :CommitmentProofDecoder, "taro/tlv/decoder/commitment_proof"
   end
 end

@@ -18,7 +18,12 @@ module Taro
   autoload :Genesis, "taro/asset"
   autoload :Asset, "taro/asset"
   autoload :Witness, "taro/witness"
+  autoload :PrevID, "taro/witness"
   autoload :AssetCommitment, "taro/commitment/asset"
   autoload :TaroCommitment, "taro/commitment/taro"
   autoload :SplitCommitment, "taro/commitment/split"
+  autoload :TxMerkleProof, "taro/proof/tx_merkle_proof"
+  autoload :TaprootProof, "taro/proof/taproot_proof"
+  autoload :Proof, "taro/proof"
+  autoload :File, "taro/file"
 end

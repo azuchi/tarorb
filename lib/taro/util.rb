@@ -33,6 +33,15 @@ module Taro
       end
     end
 
+    # Unpack +data+.
+    # @param [String|StringIO] data
+    # @return [String] unpacked data.
+    def unpack_var_string(data)
+      buf = data.is_a?(StringIO) ? data : StringIO.new(data)
+      len = unpack_big_size(buf)
+      buf.read(len)
+    end
+
     # Serialize +value+ as a variable number of bytes.
     # @param [Integer] value value to be serialized.
     # @return [String] big size value.
@@ -55,6 +64,27 @@ module Taro
     # @return [String]
     def pack_var_string(value)
       pack_big_size(value.bytesize) + value
+    end
+
+    # Returns the length in bytes that a packed bit vector would consume.
+    # @param [Integer] bits
+    # @return [Integer] length in bytes.
+    def packed_bits_len(bits)
+      ((bits + 8 - 1) / 8.0).ceil
+    end
+
+    # Unpack a byte slice into a bit vector.
+    # @param [String] bytes byte slice
+    # @return [Array] bit vector
+    def unpack_bits(bytes)
+      bits = Array(bytes * 8)
+      bits.length.times do |i|
+        byte_index = i / 8
+        byte_value = bytes[byte_index]
+        bit_index = i % 8
+        bits[i] = ((byte_value >> bit_index) & 1) == 1
+      end
+      bits
     end
   end
 end

@@ -24,13 +24,7 @@ module Taro
           buf << pack_var_string(v)
         when TLV::PREV_ASSET_WITNESS
           data = [record.value.length].pack("C")
-          data << record
-            .value
-            .map do |w|
-              v = w.encode
-              pack_big_size(v.bytesize) + v
-            end
-            .join
+          data << record.value.map { |w| PrevWitnessEncoder.encode(w) }.join
           buf << [data.bytesize].pack("C") << data
         when TLV::SPLIT_COMMITMENT
           # TODO

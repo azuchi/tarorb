@@ -6,6 +6,10 @@ module Taro
   class FamilyKey
     attr_accessor :raw_key, :fam_key, :sig
 
+    # Constructor
+    # @param [Taro::KeyDescriptor] raw_key
+    # @param [Bitcoin::Key] fam_key
+    # @param [Schnorr::Signature] sig
     def initialize(raw_key, fam_key, sig)
       unless raw_key.is_a?(Taro::KeyDescriptor)
         raise ArgumentError, "raw_key must be Schnorr::Signature"
@@ -25,6 +29,15 @@ module Taro
     # @return [String]
     def encode
       fam_key.xonly_pubkey.htb + sig.encode
+    end
+
+    # Decode tlv value as FamilyKey
+    # @param [String] payload
+    # @return [Taro::FamilyKey]
+    def self.decode(payload)
+      fam_key = Bitcoin::Key.from_xonly_pubkey(payload[0...32].bth)
+      sig = Schnorr::Signature.decode(payload[32..-1])
+      FamilyKey.new(nil, fam_key, sig)
     end
   end
 end

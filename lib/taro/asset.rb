@@ -3,8 +3,8 @@
 module Taro
   # Genesis encodes an asset's genesis metadata
   class Genesis
-    include Bitcoin::Util
     include Taro::Util
+    extend Taro::Util
 
     attr_reader :first_prev_out, :tag, :metadata, :output_index, :type
 
@@ -56,6 +56,26 @@ module Taro
       first_prev_out.tx_hash.htb + [first_prev_out.index].pack("N") +
         pack_var_string(tag) + pack_var_string(metadata) +
         [output_index, type].pack("I>C")
+    end
+
+    # Decode tlv payload as genesis.
+    # @param [String] payload
+    # @return [Taro::Genesis]
+    def self.decode(payload)
+      buf = StringIO.new(payload)
+      tx_hash = buf.read(32)
+      index = buf.read(4).unpack1("N")
+      prev_out = Bitcoin::OutPoint.new(tx_hash, index)
+      tag = unpack_var_string(buf)
+      metadata = unpack_var_string(buf)
+      output_index, type = buf.read.unpack("I>C")
+      Genesis.new(
+        prev_out: prev_out,
+        tag: tag,
+        metadata: metadata,
+        output_index: output_index,
+        type: type
+      )
     end
   end
 

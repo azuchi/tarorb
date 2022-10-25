@@ -4,12 +4,13 @@ module Taro
   # PrevID serves as a reference to an asset's previous input.
   class PrevID
     include Taro::Util
+    extend Taro::Util
     attr_reader :out_point, :id, :script_key
 
     # Constructor
     # @param [Bitcoin::OutPoint] out_point refers to the asset's previous output position within a transaction.
     # @param [String] id Asset ID of the previous asset tree.
-    # @param [Bitcoin::Key] script_key Previously tweaked Taproot output key
+    # @param [String] script_key Previously tweaked Taproot output key
     # committing to the possible spending conditions of the asset.
     def initialize(out_point, id, script_key)
       @out_point = out_point
@@ -33,6 +34,18 @@ module Taro
           script_key[1..]
       buf << pack_var_string(value)
     end
+
+    # Decode tlv value as PrevID
+    # @param [String] payload
+    # @return [Taro::PrevID]
+    def self.decode(payload)
+      buf = StringIO.new(payload)
+      tx_hash = buf.read(32).bth
+      index = buf.read(4).unpack1("N")
+      id = buf.read(32)
+      script_key = buf.read(32)
+      PrevID.new(Bitcoin::OutPoint.new(tx_hash, index), id, script_key)
+    end
   end
 
   # Witness is a nested TLV stream within the main Asset TLV stream that contains the necessary data
@@ -49,12 +62,6 @@ module Taro
       @prev_id = prev_id
       @tx_witness = tx_witness
       @split_commitment = split_commitment
-    end
-
-    # Encode tlv payload
-    # @return [String]
-    def encode
-      (prev_id ? prev_id.tlv : "") #TODO: tx_witness, split_commitment
     end
   end
 end
