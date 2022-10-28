@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 module Taro
   module TLV
+    # Decoder for asset proof TLV data.
     module AssetProofDecoder
       extend Taro::Util
 

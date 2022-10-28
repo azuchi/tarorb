@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Taro
   module TLV
+    # Decoder for commitment proof TLV data.
     module CommitmentProofDecoder
       extend Taro::Util
 
@@ -20,6 +23,7 @@ module Taro
             data << AssetProofDecoder.decode(buf) until buf.eof?
             data
           when CommitmentProofType::TARO_PROOF
+            # TODO
             value
           when CommitmentProofType::TAP_SIBLING_PREIMAGE
             # TODO

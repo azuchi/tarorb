@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 module Taro
   module TLV
+    # Decoder for asset leaf TLV data.
     module AssetLeafDecoder
       extend Taro::Util
 

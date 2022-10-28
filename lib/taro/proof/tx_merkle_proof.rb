@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Taro
+  # Simplified version of BIP-37 transaction merkle proofs for a single transaction.
   class TxMerkleProof
     include Taro::Util
     extend Taro::Util

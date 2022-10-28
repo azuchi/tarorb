@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Taro
   module TLV
+    # Encoder for previous witness TLV record.
     module PrevWitnessEncoder
       extend Taro::Util
 

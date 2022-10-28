@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Taro
   module TLV
+    # Decoder for taproot proof TLV data.
     module TaprootProofDecoder
       extend Taro::Util
 

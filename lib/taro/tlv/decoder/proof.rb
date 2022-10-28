@@ -34,12 +34,6 @@ module Taro
             data = []
             data << TaprootProofDecoder.decode(buf) until buf.eof?
             data
-          when ProofType::EXCLUSION_PROOF
-            # TODO
-          when ProofType::SPLIT_ROOT_PROOF
-            # TODO
-          when ProofType::ADDITIONAL_INPUTS
-            # TODO
           else
             raise Taro::Error, "Unsupported type: #{type} found in proof tlv"
           end
