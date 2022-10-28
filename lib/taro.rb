@@ -26,4 +26,5 @@ module Taro
   autoload :TaprootProof, "taro/proof/taproot_proof"
   autoload :Proof, "taro/proof"
   autoload :File, "taro/file"
+  autoload :Address, "taro/address"
 end

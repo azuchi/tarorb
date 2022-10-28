@@ -12,6 +12,10 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before do |example|
+    Bitcoin.chain_params = (example.metadata[:network] || :testnet)
+  end
 end
 
 def fixture_path(relative_path)

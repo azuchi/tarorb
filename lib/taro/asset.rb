@@ -63,7 +63,7 @@ module Taro
     # @return [Taro::Genesis]
     def self.decode(payload)
       buf = StringIO.new(payload)
-      tx_hash = buf.read(32)
+      tx_hash = buf.read(32).bth
       index = buf.read(4).unpack1("N")
       prev_out = Bitcoin::OutPoint.new(tx_hash, index)
       tag = unpack_var_string(buf)

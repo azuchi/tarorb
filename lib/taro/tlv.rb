@@ -65,6 +65,16 @@ module Taro
       TYPE = 1
     end
 
+    module AddrType
+      VERSION = 0
+      ASSET_GENESIS = 2
+      FAM_KEY = 3
+      SCRIPT_KEY = 4
+      INTERNAL_KEY = 6
+      AMOUNT = 8
+      ASSET_TYPE = 9
+    end
+
     autoload :Record, "taro/tlv/record"
     autoload :AssetLeafEncoder, "taro/tlv/encoder/asset_leaf"
     autoload :AssetLeafDecoder, "taro/tlv/decoder/asset_leaf"
@@ -74,5 +84,7 @@ module Taro
     autoload :TaprootProofDecoder, "taro/tlv/decoder/taproot_proof"
     autoload :AssetProofDecoder, "taro/tlv/decoder/asset_proof"
     autoload :CommitmentProofDecoder, "taro/tlv/decoder/commitment_proof"
+    autoload :AddressDecoder, "taro/tlv/decoder/address"
+    autoload :AddressEncoder, "taro/tlv/encoder/address"
   end
 end
