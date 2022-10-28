@@ -22,6 +22,9 @@ RSpec.describe Taro::Address do
       expect(address.internal_key.pubkey).to eq(
         "02564f95cbdf695755be9e0747c7df341d458ba9d7c96f755069b6df22a3492ef4"
       )
+      expect(address.taproot_output_key).to eq(
+        "37fc965befde457f4c7943750d83a5743a565fb12eaf7c01c3084fe8b106f533"
+      )
       expect(address.encode).to eq(addr)
     end
   end

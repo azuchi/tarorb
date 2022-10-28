@@ -88,6 +88,15 @@ module Taro
       Bitcoin.chain_params.mainnet? ? HRP_MAINNET : HRP_TESTNET
     end
 
+    # Generate taproot output key.
+    # @return [String] taproot output key with hex format.
+    def taproot_output_key
+      asset = Asset.new(genesis, amount, 0, 0, script_key) # TODO: family key
+      asset_commitment = AssetCommitment.new([asset])
+      taro_commitment = TaroCommitment.new([asset_commitment])
+      taro_commitment.to_taproot(internal_key).chunks[1].pushed_data.bth
+    end
+
     # Return TLV records.
     # @return [Array]
     def tlv_records
