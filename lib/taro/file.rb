@@ -37,7 +37,22 @@ module Taro
       num_proofs.times do
         proof_len = unpack_big_size(buf)
         raw_proof = StringIO.new(buf.read(proof_len))
-        proofs << TLV::ProofDecoder.decode(raw_proof) until raw_proof.eof?
+        records = {}
+        until raw_proof.eof?
+          record = TLV::ProofDecoder.decode(raw_proof)
+          records[record.type] = record.value
+        end
+        proofs << Proof.new(
+          block_header: records[TLV::ProofType::BLOCK_HEADER],
+          anchor_tx: records[TLV::ProofType::ANCHOR_TX],
+          merkle_proof: records[TLV::ProofType::MERKLE_PROOF],
+          prev_out: records[TLV::ProofType::PREV_OUT],
+          asset: records[TLV::ProofType::ASSET_LEAF],
+          inclusion_proof: records[TLV::ProofType::INCLUSION_PROOF],
+          exclusion_proof: records[TLV::ProofType::EXCLUSION_PROOF],
+          split_root_proof: records[TLV::ProofType::SPLIT_ROOT_PROOF],
+          additional_inputs: records[TLV::ProofType::ADDITIONAL_INPUTS]
+        )
       end
       File.new(version, proofs)
     end

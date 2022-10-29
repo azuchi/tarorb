@@ -3,21 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Taro::Asset do
-  let(:genesis1) do
-    genesis_point =
-      Bitcoin::OutPoint.from_txid(
-        "af2ed8bc93a28cba80bc3c8c55fc554bb7cb3f9071f59f87b83724d4e8b92ea9",
-        1
-      )
-    Taro::Genesis.new(
-      prev_out: genesis_point,
-      tag: "testcoin",
-      metadata: "metadata for test",
-      output_index: 0
-    )
-  end
-
-  let(:genesis2) do
+  let(:genesis) do
     genesis_point = Bitcoin::OutPoint.from_txid("01" * 32, 1)
     Taro::Genesis.new(
       prev_out: genesis_point,
@@ -50,17 +36,17 @@ RSpec.describe Taro::Asset do
         fam_key,
         sig
       )
-    described_class.new(genesis2, 741, 0, 0, script_key, family_key)
+    described_class.new(genesis, 741, 0, 0, script_key, family_key)
   end
 
   describe "Genesis" do
     describe "#id" do
       it do
-        expect(genesis1.id).to eq(
+        expect(genesis_sample.id).to eq(
           "9333d8360be674dfae320b7ae16bd3b618726637fad107a1d2b248a3083061ca"
         )
         # check output index endian
-        expect(genesis2.id).to eq(
+        expect(genesis.id).to eq(
           "903b66d102304419811c42f9909516afe9ccd076df7e81b92df315ffc008ece6"
         )
       end
@@ -68,7 +54,7 @@ RSpec.describe Taro::Asset do
 
     describe "#encode" do
       it do
-        expect(genesis2.encode.bth).to eq(
+        expect(genesis.encode.bth).to eq(
           "0101010101010101010101010101010101010101010101010101010101010101000000010c6e6f726d616c206173736574030102030000000100"
         )
       end
@@ -77,7 +63,7 @@ RSpec.describe Taro::Asset do
 
   describe "#commitment_key" do
     context "without family key" do
-      let(:asset) { described_class.new(genesis2, 741, 0, 0, script_key) }
+      let(:asset) { described_class.new(genesis, 741, 0, 0, script_key) }
 
       it do
         expect(asset.commitment_key.bth).to eq(

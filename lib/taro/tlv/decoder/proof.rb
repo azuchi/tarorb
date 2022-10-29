@@ -26,9 +26,19 @@ module Taro
             TxMerkleProof.decode(value)
           when ProofType::ASSET_LEAF
             buf = StringIO.new(value)
-            data = []
-            data << AssetLeafDecoder.decode(buf) until buf.eof?
-            data
+            records = {}
+            until buf.eof?
+              record = AssetLeafDecoder.decode(buf)
+              records[record.type] = record.value
+            end
+            Asset.new(
+              records[TLV::GENESIS],
+              records[TLV::AMOUNT],
+              records[TLV::LOCKTIME],
+              records[TLV::RELATIVE_LOCKTIME],
+              records[TLV::ASSET_SCRIPT_KEY],
+              records[TLV::ASSET_FAMILY_KEY]
+            )
           when ProofType::INCLUSION_PROOF
             buf = StringIO.new(value)
             data = []

@@ -111,8 +111,8 @@ module Taro
     )
       @genesis = genesis
       @amount = amount
-      @locktime = locktime
-      @relative_locktime = relative_locktime
+      @locktime = locktime || 0
+      @relative_locktime = relative_locktime || 0
       @script_key = script_key
       @family_key = family_key
       @version = 0
@@ -138,6 +138,14 @@ module Taro
     # @return [MSSMT::LeafNode]
     def leaf
       MSSMT::LeafNode.new(tlv, amount)
+    end
+
+    # Check whether +other+ is same asset or not.
+    # @param [Taro::Asset] other
+    # @return [Boolean]
+    def ==(other)
+      return false unless other.is_a?(Taro::Asset)
+      leaf == other.leaf
     end
 
     private
