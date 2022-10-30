@@ -19,14 +19,32 @@ module Taro
           case type
           when CommitmentProofType::ASSET_PROOF
             buf = StringIO.new(value)
-            data = []
-            data << AssetProofDecoder.decode(buf) until buf.eof?
-            data
+            records = {}
+            until buf.eof?
+              record = AssetProofDecoder.decode(buf)
+              records[record.type] = record.value
+            end
+            AssetProof.new(
+              proof: records[AssetProofType::PROOF],
+              version: records[AssetProofType::VERSION],
+              asset_id: records[AssetProofType::ASSET_ID]
+            )
           when CommitmentProofType::TARO_PROOF
-            # TODO
-            value
+            buf = StringIO.new(value)
+            records = {}
+            until buf.eof?
+              record = TaroProofDecoder.decode(buf)
+              records[record.type] = record.value
+            end
+            TaroProof.new(
+              proof: records[TaroProofType::PROOF],
+              version: records[TaroProofType::VERSION]
+            )
           when CommitmentProofType::TAP_SIBLING_PREIMAGE
-            # TODO
+            sibling_type, preimage = value.unpack("Ca*")
+            TapscriptPreimage.new(sibling_type, preimage)
+          else
+            raise Taro::Error, "Unsupported type: #{type}"
           end
         Record.new(type, record_value)
       end

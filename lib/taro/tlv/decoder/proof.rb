@@ -41,9 +41,17 @@ module Taro
             )
           when ProofType::INCLUSION_PROOF
             buf = StringIO.new(value)
-            data = []
-            data << TaprootProofDecoder.decode(buf) until buf.eof?
-            data
+            records = {}
+            until buf.eof?
+              record = TaprootProofDecoder.decode(buf)
+              records[record.type] = record.value
+            end
+            TaprootProof.new(
+              output_index: records[TaprootProofType::OUTPUT_INDEX],
+              internal_key: records[TaprootProofType::INTERNAL_KEY],
+              commitment_proof: records[TaprootProofType::COMMITMENT_PROOF],
+              tapscript_proof: records[TaprootProofType::TAPSCRIPT_PROOF]
+            )
           else
             raise Taro::Error, "Unsupported type: #{type} found in proof tlv"
           end

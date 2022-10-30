@@ -51,7 +51,7 @@ module Taro
     module AssetProofType
       VERSION = 0
       ASSET_ID = 1
-      TYPE = 2
+      PROOF = 2
     end
 
     module TapscriptProofType
@@ -62,7 +62,7 @@ module Taro
 
     module TaroProofType
       VERSION = 0
-      TYPE = 1
+      PROOF = 1
     end
 
     module AddrType
@@ -86,5 +86,7 @@ module Taro
     autoload :CommitmentProofDecoder, "taro/tlv/decoder/commitment_proof"
     autoload :AddressDecoder, "taro/tlv/decoder/address"
     autoload :AddressEncoder, "taro/tlv/encoder/address"
+    autoload :TaroProofDecoder, "taro/tlv/decoder/taro_proof"
+    autoload :TapscriptProofDecoder, "taro/tlv/decoder/tapscript_proof"
   end
 end

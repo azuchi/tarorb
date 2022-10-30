@@ -22,9 +22,16 @@ module Taro
   autoload :AssetCommitment, "taro/commitment/asset"
   autoload :TaroCommitment, "taro/commitment/taro"
   autoload :SplitCommitment, "taro/commitment/split"
-  autoload :TxMerkleProof, "taro/proof/tx_merkle_proof"
+
+  # Proof
+  autoload :AssetProof, "taro/proof/asset_proof"
+  autoload :CommitmentProof, "taro/proof/commitment_proof"
   autoload :TaprootProof, "taro/proof/taproot_proof"
+  autoload :TaroProof, "taro/proof/taro_proof"
+  autoload :TxMerkleProof, "taro/proof/tx_merkle_proof"
   autoload :Proof, "taro/proof"
+
+  autoload :TapscriptPreimage, "taro/tapscript_proof"
   autoload :File, "taro/file"
   autoload :Address, "taro/address"
 end

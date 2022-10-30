@@ -1,27 +1,28 @@
 # frozen_string_literal: true
+
 module Taro
   module TLV
-    # Decoder for asset proof TLV data.
-    module AssetProofDecoder
+    # Decoder for Taro proof TLV data.
+    module TaroProofDecoder
       extend Taro::Util
 
       module_function
 
-      # # Decode tlv as CommitmentProof.
-      # @param [String] data
-      # @return [Taro::Witness]
+      # # Decode Asset Leaf TLV as Taro::TLV::Record
+      # @param [String] data TLV value.
+      # @return [Taro::TLV::Record]
       def decode(data)
         buf = data.is_a?(StringIO) ? data : StringIO.new(data)
         type = unpack_big_size(buf)
         value = unpack_var_string(buf)
         record_value =
           case type
-          when AssetProofType::VERSION
-            value.unpack1("C")
-          when AssetProofType::ASSET_ID
-            value.bth
-          when AssetProofType::PROOF
+          when TaroProofType::PROOF
             MSSMT::CompressedProof.decode(value).decompress
+          when TaroProofType::VERSION
+            value.unpack1("C")
+          else
+            raise Taro::Error, "Unsupported type: #{type}"
           end
         Record.new(type, record_value)
       end

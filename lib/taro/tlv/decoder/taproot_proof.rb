@@ -23,11 +23,19 @@ module Taro
             Bitcoin::Key.from_xonly_pubkey(value.bth)
           when TaprootProofType::COMMITMENT_PROOF
             buf = StringIO.new(value)
-            data = []
-            data << CommitmentProofDecoder.decode(buf) unless buf.eof?
-            data
+            records = {}
+            until buf.eof?
+              record = CommitmentProofDecoder.decode(buf)
+              records[record.type] = record.value
+            end
+            CommitmentProof.new(
+              asset_proof: records[CommitmentProofType::ASSET_PROOF],
+              taro_proof: records[CommitmentProofType::TARO_PROOF],
+              tap_sibling_preimage:
+                records[CommitmentProofType::TAP_SIBLING_PREIMAGE]
+            )
           when TaprootProofType::TAPSCRIPT_PROOF
-            puts "TAPSCRIPT_PROOF = #{value.bth}"
+            TapscriptProofDecoder.decode(value)
           end
         Record.new(type, record_value)
       end
